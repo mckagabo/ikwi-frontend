@@ -5,13 +5,10 @@ import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 
 const features = [
-  "Powerfull online protection.",
-  "Internet without borders.",
-  "Supercharged VPN",
-  "No specific time limits."
+ 
 ]
 
-const Feature = () => {
+const Feature = ({aboutUs}) => {
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
 
   return (
@@ -23,8 +20,8 @@ const Feature = () => {
         <ScrollAnimationWrapper className="flex w-full justify-end">
           <motion.div className="h-full w-full p-4" variants={scrollAnimation}>
             <Image
-              src="/assets/Illustration2.png"
-              alt="VPN Illustrasi"
+              src={aboutUs.image}
+              alt="Ikwi about us"
               layout="responsive"
               quality={100}
               height={414}
@@ -36,11 +33,10 @@ const Feature = () => {
 
         <motion.div className="flex flex-col items-end justify-center ml-auto w-full lg:w-9/12" variants={scrollAnimation}>
           <h3 className="text-3xl lg:text-4xl font-medium leading-relaxed text-black-600">
-            We Provide Many Features You Can Use
+          {aboutUs.heading}
           </h3>
           <p className="my-2 text-black-500">
-            You can explore the features that we provide with fun and have their
-            own functions each feature.
+          {aboutUs.description}.
           </p>
           <ul className="text-black-500 self-start list-inside ml-8">
             {features.map((feature, index) => (

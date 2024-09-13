@@ -4,15 +4,73 @@ import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
 import ButtonOutline from "../misc/ButtonOutline.";
 import LogoVPN from "../../public/assets/Logo.svg";
-
+import SocialMediaLinks from "../SocialMedia";
+import { getStrapiURL } from "../../utils/util";
+import qs from 'qs'
+import { fetchData } from "../../utils/util";
 const Header = () => {
   const [activeLink, setActiveLink] = useState(null);
   const [scrollActive, setScrollActive] = useState(false);
+  const [links, setLinks] = useState([]); 
+  const [logoLink, setLogoLink] = useState({}); 
   useEffect(() => {
     window.addEventListener("scroll", () => {
       setScrollActive(window.scrollY > 20);
     });
   }, []);
+
+
+  useEffect(() => {
+    const fetchNav = async () => {
+      const data = await navigationAttributes();
+      const { logoLink, link } = data;
+      const {image}=logoLink;
+      const theUrl = image.data.attributes.url;
+      const theLogo = {
+        imageUrl: theUrl || '', // Provide fallback in case URL is not available
+        text: data.logoLink?.text || '', // Safe access with fallback
+        href: data.logoLink?.href || '', // Safe access with fallback
+      };
+      setLogoLink(theLogo); // Save logoLink in state
+      setLinks(link);
+    
+    };
+    fetchNav();
+  }, []);
+
+  async function navigationAttributes(){
+    const baseUrl=getStrapiURL();
+    const path='/api/global'
+    const query=qs.stringify({
+      populate: {
+        topnav: {
+          populate:{
+           logoLink:{
+            populate:{
+              image:{
+               fields:["url",'alternativeText','name'],
+             }
+            }
+           },
+           link:{
+           populate:true,
+           }
+          }
+        }
+      },
+     
+      publicationState: 'live',
+      locale: ['en'],
+    })
+
+    const url=new URL(path,baseUrl);
+    url.search=query;
+   // const data=await fetchData(url.href);
+   const data= await fetchData(url.href);
+    return data.data.attributes.topnav;
+  }
+
+
   return (
     <>
       <header
@@ -23,89 +81,35 @@ const Header = () => {
       >
         <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
           <div className="col-start-1 col-end-2 flex items-center">
-            <LogoVPN className="h-8 w-auto" />
+           
+            <img src={getStrapiURL()+logoLink.imageUrl} className="h-12 w-auto"/>
           </div>
           <ul className="hidden lg:flex col-start-4 col-end-8 text-black-500  items-center">
-            <LinkScroll
-              activeClass="active"
-              to="about"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
-                setActiveLink("about");
-              }}
-              className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
-                (activeLink === "about"
-                  ? " text-orange-500 animation-active "
-                  : " text-black-500 hover:text-orange-500 a")
-              }
-            >
-              About
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="feature"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
-                setActiveLink("feature");
-              }}
-              className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
-                (activeLink === "feature"
-                  ? " text-orange-500 animation-active "
-                  : " text-black-500 hover:text-orange-500 ")
-              }
-            >
-              Feature
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="pricing"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
-                setActiveLink("pricing");
-              }}
-              className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
-                (activeLink === "pricing"
-                  ? " text-orange-500 animation-active "
-                  : " text-black-500 hover:text-orange-500 ")
-              }
-            >
-              Pricing
-            </LinkScroll>
-            <LinkScroll
-              activeClass="active"
-              to="testimoni"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              onSetActive={() => {
-                setActiveLink("testimoni");
-              }}
-              className={
-                "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
-                (activeLink === "testimoni"
-                  ? " text-orange-500 animation-active "
-                  : " text-black-500 hover:text-orange-500 ")
-              }
-            >
-              Testimonial
-            </LinkScroll>
+          {links.map((link,index)=>(
+             <LinkScroll
+             index={index}
+             activeClass="active"
+             to={link.href}
+             spy={true}
+             smooth={true}
+             duration={1000}
+             onSetActive={() => {
+              setActiveLink(link.href);
+             }}
+             className={
+               "px-4 py-2 mx-2 cursor-pointer animation-hover inline-block relative" +
+               (activeLink === link.href
+                 ? " text-orange-500 animation-active "
+                 : " text-black-500 hover:text-orange-500 a")
+             }
+           >
+             {link.text}
+           </LinkScroll>
+           ))}
+
           </ul>
           <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
-            <Link href="/">
-              <a className="text-black-600 mx-2 sm:mx-4 capitalize tracking-wide hover:text-orange-500 transition-all">
-                  Sign In
-              </a>
-            </Link>
-            <ButtonOutline>Sign Up</ButtonOutline>
+           <SocialMediaLinks/>
           </div>
         </nav>
       </header>
