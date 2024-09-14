@@ -19,7 +19,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Team from "./Team";
 
 
-const Pricing = ({ourService,ourTeam,beforFooter}) => {
+const Pricing = ({ourService,ourTeam,beforFooter,serviceBlock,partners}) => {
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
   const [services,setServices]=useState([]);
   const [teamMembers,setTeamMembers]=useState([]);
@@ -164,18 +164,41 @@ const Pricing = ({ourService,ourTeam,beforFooter}) => {
           modules={[Navigation, Pagination]}
           className="mySwiper"
         >
-          {services.map((service, index) => (
+          {serviceBlock.map((service, index) => (
             <SwiperSlide key={index}>
             <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
               {/* Container to center the image */}
               <div className="flex items-center justify-center h-20 w-20 rounded-full bg-blue-500 mb-4 mx-auto">
                 {/* Image centered inside the container */}
-                <img src={service.icon} alt={service.title} className="h-16 w-16 object-contain" />
+                <img src={service.image} alt={service.heading} className="h-16 w-16 object-contain" />
               </div>
               <h3 className="text-xl font-semibold text-orange-600 mb-2">
-                {service.title}
+                {service.heading}
+               
               </h3>
-              <p className="text-black-500 line-clamp-4">{service.description}</p>
+            
+                    {/* Looping through the service.elements list */}
+      {service.elements.map((key, elementIndex) => (
+        <ul key={elementIndex} className="flex items-center mb-2">
+          {/* Tick Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-green-500 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 6.707 9.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <p className="text-black-500 line-clamp-4">
+            {key.inputText}
+          </p>
+        </ul>
+      ))} 
+             
             </div>
           </SwiperSlide>
           ))}
@@ -204,19 +227,19 @@ const Pricing = ({ourService,ourTeam,beforFooter}) => {
           </ScrollAnimationWrapper> */}
           <ScrollAnimationWrapper>
           <motion.div className="w-full flex justify-evenly items-center mt-4 flex-wrap lg:flex-nowrap" variants={scrollAnimation}>
-  {imageList.map((image, index) => (
+  {partners.map((partner, index) => (
     <div
     key={index}
     className="flex flex-col items-center flex-shrink-0"
     style={{ flexBasis: "20%" }} // Flex basis to fit images horizontally
   >
     <img
-      src={image.src}
-      className={`${image.height} w-auto mt-4 lg:mt-2`}
-      alt={image.alt}
+      src={partner.logo}
+      className='h-14 w-auto mt-4 lg:mt-2'
+      alt={partner.name}
     />
     <p className="mt-2 text-black-600 text-sm font-semibold">
-      company name
+      {partner.name}
     </p>
   </div>
   ))}

@@ -19,11 +19,13 @@ export default function Home() {
   const [beforeFooter,setBeforeFooter]=useState({});
   const [ourTestimonies,setOurTestimonies]=useState({});
   const [aboutUs,setAboutUs]=useState({});
+  const [serviceBlocks,setServiceBlocks]=useState([]);
+  const [partners,setPartners]=useState([]);
 
   useEffect(()=>{
      const homePageValues=async ()=>{
       const data=await homePageAttributes();
-      const {Hero,title,description,services,team,aboutus}=data;
+      const {Hero,title,description,services,team,aboutus,serviceBlock,OurPartners}=data;
       const heroSection={
          heading:data.Hero?.heading ||'',
          description:data.Hero?.text ||'',
@@ -33,7 +35,27 @@ export default function Home() {
          linkHref:data.Hero.link?.link||''
         
       }
+      let thePartners=[];
+      OurPartners.map((partner)=>{
+        const onePartner={
+           name:partner.companyName,
+           logo:getStrapiURL()+''+partner.companyLogo.data?.attributes?.url||''
+        }
+        thePartners.push(onePartner);
+      })
+     setPartners(thePartners);
 
+      let theServiceBlocks=[];
+       serviceBlock.map((service,index)=>{
+        const oneService={
+          image:getStrapiURL()+''+service.serviceImage?.data?.attributes?.url,
+          heading:service.heading,
+          elements:service.serviceElement,
+        }
+        theServiceBlocks.push(oneService);
+       })
+    
+      setServiceBlocks(theServiceBlocks);
       const serviceSection={
           heading:services?.heading,
           description:services?.description
@@ -82,8 +104,24 @@ export default function Home() {
               services:{
                 populate:true,
              },
-             
-              team:{
+             OurPartners:{
+               populate:{
+                 companyLogo:{
+                  populate:true
+                 }
+               }
+             },
+             serviceBlock:{
+               populate:{
+                 serviceElement:{
+                  populate:true
+                 },
+                 serviceImage:{
+                  populate:true
+                 }
+               }
+             }
+             , team:{
                populate:true,
               },
               aboutus:{
@@ -125,7 +163,7 @@ export default function Home() {
       <Layout>
         <Hero description={hero.description} heading={hero.heading} buttonText={hero.linkTitle} heroImage={hero.image}/>
         <Feature ourService={ourServices} ourTeam={ourTeam} aboutUs={aboutUs}/>
-        <Pricing ourService={ourServices} ourTeam={ourTeam}/>
+        <Pricing ourService={ourServices} ourTeam={ourTeam}  serviceBlock={serviceBlocks} partners={partners}/>
       </Layout>
     </>
   );

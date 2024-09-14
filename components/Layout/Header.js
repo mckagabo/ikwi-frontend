@@ -8,6 +8,7 @@ import SocialMediaLinks from "../SocialMedia";
 import { getStrapiURL } from "../../utils/util";
 import qs from 'qs'
 import { fetchData } from "../../utils/util";
+import Footer from "./Footer";
 const Header = () => {
   const [activeLink, setActiveLink] = useState(null);
   const [scrollActive, setScrollActive] = useState(false);
@@ -55,6 +56,24 @@ const Header = () => {
            link:{
            populate:true,
            }
+          }
+        },
+         socialMedia:{
+             populate:true
+            },
+          Footer:{
+          populate:{
+           
+            Addresses:{
+            populate:true
+            },
+            Logo:{
+             populate:{
+               image:{
+                populate:true
+               }     
+             }, 
+            }
           }
         }
       },
