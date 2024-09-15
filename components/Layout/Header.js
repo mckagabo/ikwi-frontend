@@ -19,7 +19,19 @@ const Header = () => {
       setScrollActive(window.scrollY > 20);
     });
   }, []);
+// Tawk Script loader
+useEffect(() => {
+  const loadTawkScript = () => {
+    const script = document.createElement("script");
+    script.src = 'https://embed.tawk.to/66e7208eea492f34bc142125/1i7rdeb6e';
+    script.async = true;
+    script.charset = 'UTF-8';
+    script.setAttribute('crossorigin', '*');
+    document.body.appendChild(script);
+  };
 
+  loadTawkScript();
+}, []);
 
   useEffect(() => {
     const fetchNav = async () => {
@@ -98,7 +110,10 @@ const Header = () => {
           (scrollActive ? " shadow-md pt-0" : " pt-4")
         }
       >
-       
+        {/* Tawk thing */}
+      
+
+   {/* End of Tawk thing */}
         <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
           <div className="col-start-1 col-end-2 flex items-center">
            <a href="/">
@@ -134,6 +149,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
+
       {/* Mobile Navigation */}
 
       <nav className="fixed lg:hidden bottom-0 left-0 right-0 z-20 px-4 sm:px-8 shadow-t ">
