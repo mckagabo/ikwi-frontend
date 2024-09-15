@@ -3,7 +3,7 @@ import Link from "next/link";
 // Import react scroll
 import { Link as LinkScroll } from "react-scroll";
 import ButtonOutline from "../misc/ButtonOutline.";
-import LogoVPN from "../../public/assets/Logo.svg";
+
 import SocialMediaLinks from "../SocialMedia";
 import { getStrapiURL } from "../../utils/util";
 import qs from 'qs'
@@ -98,10 +98,12 @@ const Header = () => {
           (scrollActive ? " shadow-md pt-0" : " pt-4")
         }
       >
+       
         <nav className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto grid grid-flow-col py-3 sm:py-4">
           <div className="col-start-1 col-end-2 flex items-center">
-           
+           <a href="/">
             <img src={getStrapiURL()+logoLink.imageUrl} className="h-12 w-auto"/>
+            </a>
           </div>
           <ul className="hidden lg:flex col-start-4 col-end-8 text-black-500  items-center">
           {links.map((link,index)=>(
@@ -199,7 +201,7 @@ const Header = () => {
                   d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
                 />
               </svg>
-              Feature
+              About us
             </LinkScroll>
             <LinkScroll
               activeClass="active"
@@ -231,7 +233,7 @@ const Header = () => {
                   d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Pricing
+              Our Service
             </LinkScroll>
             <LinkScroll
               activeClass="active"

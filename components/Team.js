@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { FaLinkedin, FaTwitter, FaGithub } from "react-icons/fa";
-
+import { FaLinkedin, FaTwitter, FaGithub,FaXing } from "react-icons/fa";
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, XSquare } from 'lucide-react';
 const Team = ({ members }) => {
   return (
     <section className="py-12 bg-white-500">
@@ -40,7 +40,7 @@ const Team = ({ members }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FaTwitter className="text-2xl text-blue-400" />
+                    <XSquare className="text-2xl text-blue-400" />
                   </a>
                 )}
                 {/* {member.social.github && (

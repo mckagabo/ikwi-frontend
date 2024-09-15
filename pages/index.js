@@ -9,7 +9,6 @@ import { fetchData } from "../utils/util";
 import React, { useState, useEffect } from "react";
 export default function Home() {
 
-
   const [headTitle,setHeadTitle]=useState();
   const [hero,setHero]=useState({});
   const [ourProjectCard,setOurProjectCard]=useState([]);
