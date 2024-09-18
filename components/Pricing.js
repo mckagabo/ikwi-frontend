@@ -52,23 +52,25 @@ const Pricing = ({ourService,ourTeam,beforFooter,serviceBlock,partners}) => {
                theTestimonies.push(oneTestimoni);
         })
         setTestimonials(theTestimonies);
-        let theMembers=[];
-        const allTheTeams=await allMembers();
-        allTheTeams.map((member)=>{
-          const oneMember={
-            name:member.attributes.name,
-            position:member.attributes.role,
-            image:getStrapiURL()+member.attributes.teamMemberImage.data.attributes.url,
-            social:{
-              linkedin: member.attributes.linkedin,
-              twitter: member.attributes.xhandle,
-              github: "https://github.com/johndoe"
-            }
-          }
-          theMembers.push(oneMember)
-        })
-        setTeamMembers(theMembers);
-         console.log('Doree',theMembers);
+        const allTheTeams = await allMembers();
+        if (allTheTeams && allTheTeams.length > 0) {
+          let theMembers = [];
+          allTheTeams.map((member) => {
+            const oneMember = {
+              name: member.attributes.name,
+              position: member.attributes.role,
+              image: getStrapiURL() + member.attributes.teamMemberImage.data.attributes.url,
+              social: {
+                linkedin: member.attributes.linkedin,
+                twitter: member.attributes.xhandle,
+                github: "https://github.com/johndoe",
+              },
+            };
+            theMembers.push(oneMember);
+          });
+          setTeamMembers(theMembers);
+          console.log("Team members fetched successfully:", theMembers);
+        }
       }
       strapiQueries();
     },[])
@@ -206,7 +208,7 @@ const Pricing = ({ourService,ourTeam,beforFooter,serviceBlock,partners}) => {
                     
 
         </div>
-        <div className="flex flex-col w-full my-16">
+    <div className="flex flex-col w-full my-16">
           <ScrollAnimationWrapper>
             <motion.h3
               variants={scrollAnimation}
@@ -224,26 +226,42 @@ const Pricing = ({ourService,ourTeam,beforFooter,serviceBlock,partners}) => {
           </ScrollAnimationWrapper> */}
           <ScrollAnimationWrapper>
           <motion.div className="w-full flex justify-evenly items-center mt-4 flex-wrap lg:flex-nowrap" variants={scrollAnimation}>
-  {partners.map((partner, index) => (
-    <div
-    key={index}
-    className="flex flex-col items-center flex-shrink-0"
-    style={{ flexBasis: "20%" }} // Flex basis to fit images horizontally
-  >
-    <img
-      src={partner.logo}
-      className='h-14 w-auto mt-4 lg:mt-2'
-      alt={partner.name}
-    />
-    <p className="mt-2 text-black-600 text-sm font-semibold">
-      {partner.name}
-    </p>
-  </div>
-  ))}
+      {partners.map((partner, index) => (
+         <div
+          key={index}
+          className="flex flex-col items-center flex-shrink-0"
+         style={{ flexBasis: "20%" }} // Flex basis to fit images horizontally
+          >
+       <img
+        src={partner.logo}
+         className='h-14 w-auto mt-4 lg:mt-2'
+         alt={partner.name}
+       />
+      <p className="mt-2 text-black-600 text-sm font-semibold">
+        {partner.name}
+      </p>
+     </div>
+    ))}
+  </motion.div>
+ </ScrollAnimationWrapper>
+ </div>
+ <div className="flex flex-col w-full my-16" id='team'>
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-black-600 leading-normal w-9/12 sm: lg:w-4/12 mx-auto">
+    {ourTeam?.heading}
+  </h3>
+  <p className="leading-normal mx-auto mb-2 mt-4 w-10/12 sm:w-7/12 lg:w-6/12">
+    {ourTeam?.description}
+  </p>
+  <motion.div variants={scrollAnimation}>
+  {teamMembers.length > 0 ? (
+    <Team members={teamMembers} />
+  ) : (
+    <p>Loading team members...</p> // Placeholder until the data is fetched
+  )}
 </motion.div>
-          </ScrollAnimationWrapper>
-        </div>
-        <div className="flex flex-col w-full my-16" id='team'>
+</div>
+
+    {/* <div className="flex flex-col w-full my-16" id='team'>
            <ScrollAnimationWrapper>
         <motion.h3
               variants={scrollAnimation}
@@ -261,7 +279,7 @@ const Pricing = ({ourService,ourTeam,beforFooter,serviceBlock,partners}) => {
             </motion.div>
        </ScrollAnimationWrapper>
          
-         </div>
+     </div> */}
          <div className="flex flex-col w-full my-16" id="testimoni">
           <ScrollAnimationWrapper>
             <motion.h3
